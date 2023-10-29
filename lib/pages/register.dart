@@ -1,3 +1,4 @@
+import 'package:face_swapper/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -17,10 +18,10 @@ class RegisterState extends State<Register> {
           width: double.infinity,
           decoration: BoxDecoration(
               gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-                Colors.orange.shade900,
-                Colors.orange.shade800,
-                Colors.orange.shade400,
-              ])),
+            Colors.orange.shade900,
+            Colors.orange.shade800,
+            Colors.orange.shade400,
+          ])),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,20 +31,27 @@ class RegisterState extends State<Register> {
                 ),
                 const Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Register",
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Register",
+                            style: TextStyle(color: Colors.white, fontSize: 40),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            "Welcome Back",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        "Welcome Back",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      )
+
+                      SizedBox(child: Image(image: AssetImage("assets/oxogames.png"), width: 160,),)
                     ],
                   ),
                 ),
@@ -67,7 +75,7 @@ class RegisterState extends State<Register> {
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                               boxShadow: [
                                 BoxShadow(
                                     color: Color.fromRGBO(225, 95, 27, .3),
@@ -86,7 +94,7 @@ class RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                       hintText: "Username",
                                       helperStyle:
-                                      TextStyle(color: Colors.grey),
+                                          TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
                                 ),
                               ),
@@ -100,7 +108,7 @@ class RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                       hintText: "Email or Phone Number",
                                       helperStyle:
-                                      TextStyle(color: Colors.grey),
+                                          TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
                                 ),
                               ),
@@ -114,7 +122,7 @@ class RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                       hintText: "Password",
                                       helperStyle:
-                                      TextStyle(color: Colors.grey),
+                                          TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
                                 ),
                               )
@@ -150,42 +158,114 @@ class RegisterState extends State<Register> {
                         const SizedBox(
                           height: 30,
                         ),
-                        Column(
+                        Row(
                           children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
+                            Expanded(
                               child: ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.only(top: 15, right: 33, bottom: 15, left: 33),
-                                    backgroundColor: Colors.blue,
-                                    minimumSize: Size(300, 50)
+                                  backgroundColor: Colors.blue,
+                                  shadowColor: Colors.black87,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(
+                                      double.infinity, 55), //////// HERE
                                 ),
-                                icon: const Icon(Icons.facebook, color: Colors.white),
-                                label: const Text('Facebook', style: TextStyle(color: Colors.white),),
-                                onPressed: () {
-                                  print('Gönder butonuna tıklandı!');
-                                },
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.facebook,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                label: const Text(
+                                  'Facebook',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 80,),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Expanded(
                               child: ElevatedButton.icon(
                                 style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.only(top: 15, right: 33, bottom: 15, left: 33),
-                                    backgroundColor: Colors.blue,
-                                    minimumSize: Size(220, 50)
+                                  backgroundColor: Colors.black,
+                                  shadowColor: Colors.black87,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(
+                                      double.infinity, 55), //////// HERE
                                 ),
-                                icon: const Icon(Icons.facebook, color: Colors.white),
-                                label: const Text('Facebook', style: TextStyle(color: Colors.white),),
-                                onPressed: () {
-                                  print('Gönder butonuna tıklandı!');
-                                },
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  "assets/github.png",
+                                  width: 30,
+                                ),
+                                label: const Text(
+                                  'Github',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
                               ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shadowColor: Colors.black87,
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(
+                                      double.infinity, 55), //////// HERE
+                                  side: const BorderSide(
+                                      width: 2, color: Colors.white12)),
+                              onPressed: () {},
+                              icon: Image.asset(
+                                "assets/google.png",
+                                width: 26,
+                              ),
+                              label: const Text(
+                                'Google',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 17),
+                              ),
+                            ))
+                          ],
+                        ),
+                        const SizedBox(height: 50,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Are you registered?"),
+                            const SizedBox(width: 10,),
+                            SizedBox(child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shadowColor: Colors.black87,
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(60, 40), //////// HERE
+                                  side: const BorderSide(
+                                      width: 2, color: Colors.white12)),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Login()),
+                                );
+                              },
+                              child: const Text("Login", style: TextStyle(color: Colors.white),),
+                            ),
                             ),
                           ],
                         )

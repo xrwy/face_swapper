@@ -1,3 +1,4 @@
+import 'package:face_swapper/pages/register.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -30,20 +31,27 @@ class LoginState extends State<Login> {
                 ),
                 const Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Login",
+                            style: TextStyle(color: Colors.white, fontSize: 40),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            "Welcome Back",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        "Welcome Back",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      )
+
+                      SizedBox(child: Image(image: AssetImage("assets/oxogames.png"), width: 160,),)
                     ],
                   ),
                 ),
@@ -134,7 +142,7 @@ class LoginState extends State<Login> {
                           ),
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         const Text(
                           "Continue with social media",
@@ -143,43 +151,116 @@ class LoginState extends State<Login> {
                         const SizedBox(
                           height: 30,
                         ),
+
                         Row(
                           children: <Widget>[
-                            Expanded(child: Container(
-                              height: 50,
-                              //margin: const EdgeInsets.symmetric(horizontal: 50),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.blue,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "Facebook",
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shadowColor: Colors.black87,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(
+                                      double.infinity, 55), //////// HERE
+                                ),
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.facebook,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                label: const Text(
+                                  'Facebook',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                      color: Colors.white, fontSize: 17),
                                 ),
                               ),
-                            ),),
-
-
-                            const SizedBox(width: 30,),
-                            Expanded(child: Container(
-                              height: 50,
-                              //margin: const EdgeInsets.symmetric(horizontal: 50),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.black,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "Github",
+                            ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  shadowColor: Colors.black87,
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(
+                                      double.infinity, 55), //////// HERE
+                                ),
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  "assets/github.png",
+                                  width: 30,
+                                ),
+                                label: const Text(
+                                  'Github',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                      color: Colors.white, fontSize: 17),
                                 ),
                               ),
-                            ),),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shadowColor: Colors.black87,
+                                      elevation: 4,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(50)),
+                                      minimumSize: const Size(
+                                          double.infinity, 55), //////// HERE
+                                      side: const BorderSide(
+                                          width: 2, color: Colors.white12)),
+                                  onPressed: () {},
+                                  icon: Image.asset(
+                                    "assets/google.png",
+                                    width: 26,
+                                  ),
+                                  label: const Text(
+                                    'Google',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17),
+                                  ),
+                                ))
+                          ],
+                        ),
+                        const SizedBox(height: 50,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Are you not registered?"),
+                            const SizedBox(width: 10,),
+                            SizedBox(child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shadowColor: Colors.black87,
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  minimumSize: const Size(60, 40), //////// HERE
+                                  side: const BorderSide(
+                                      width: 2, color: Colors.white12)),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const Register()),
+                                );
+                              },
+                              child: const Text("Register", style: TextStyle(color: Colors.white),),
+                              ),
+                            ),
                           ],
                         )
                       ],
