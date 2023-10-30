@@ -1,7 +1,10 @@
+import 'package:face_swapper/api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
 class FaceSwapper extends StatefulWidget {
   const FaceSwapper({super.key});
@@ -195,69 +198,79 @@ class FaceSwapperState extends State<FaceSwapper> {
               Align(
                   alignment: Alignment.center,
                   heightFactor: 1.0,
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueAccent),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                            )),
-                        padding:
-                        MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-                              (Set<MaterialState> states) {
-                            return const EdgeInsets.all(15);
-                          },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.blueAccent),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(7.0)),
+                          )),
+                          padding: MaterialStateProperty.resolveWith<
+                              EdgeInsetsGeometry>(
+                            (Set<MaterialState> states) {
+                              return const EdgeInsets.all(15);
+                            },
+                          ),
+                        ),
+                        onPressed: () {
+                          selectImage();
+                        },
+                        child: const Text(
+                          'Select Image',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
-                      onPressed: () {
-                        selectImage();
-                      },
-                      child: const Text(
-                        'Select Image',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18.0,
-                        ),
+                      const SizedBox(
+                        width: 30,
                       ),
-                    ),
-                    const SizedBox(width: 30,),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red.shade400,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.red.shade400,
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(7.0)),
+                          )),
+                          padding: MaterialStateProperty.resolveWith<
+                              EdgeInsetsGeometry>(
+                            (Set<MaterialState> states) {
+                              return const EdgeInsets.only(
+                                  top: 15, bottom: 15, right: 50, left: 50);
+                            },
+                          ),
                         ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                            )),
-                        padding:
-                        MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-                              (Set<MaterialState> states) {
-                            return const EdgeInsets.only(top: 15, bottom: 15, right: 50, left: 50);
-                          },
+                        onPressed: () {
+                          selected = "";
+                          pingImageResult = null;
+                        },
+                        child: const Text(
+                          'Clear',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18.0,
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        selected = "";
-                        pingImageResult = null;
-                      },
-                      child: const Text(
-                        'Clear',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    )
-                  ],)),
+                      )
+                    ],
+                  )),
               const SizedBox(
                 height: 45,
               ),
@@ -273,17 +286,46 @@ class FaceSwapperState extends State<FaceSwapper> {
                       minimumSize:
                           const Size(double.infinity, 55), //////// HERE
                       side: const BorderSide(width: 2, color: Colors.white12)),
-                  onPressed: () {
-                    if(pingImageResult != null && selected != "") {
+                  onPressed: () async {
+                    if (pingImageResult != null && selected != "") {
+                      switch (selected) {
+                        case prompts.facebook:
+                          {
+                            try {
+                              await Api.imageFromUserRequest();
+                            } catch (e) {
+                              print(e.toString());
+                            }
+                            // some codes
+                          }
+                        case prompts.instagram:
+                          {
+                            try {
+                              await Api.imageFromUserRequest();
+                            } catch (e) {
+                              print(e.toString());
+                            }
+                            // some codes
+                          }
+                        case prompts.linkedin:
+                          {
+                            try {
+                              await Api.imageFromUserRequest();
+                            } catch (e) {
+                              print(e.toString());
+                            }
+                            // some codes
+                          }
+                      }
                       // some codes
-                    }else {
+                    } else {
                       Widget cancelButton = TextButton(
                         child: const Text("Cancel"),
-                        onPressed:  () {
+                        onPressed: () {
                           Navigator.of(context).pop();
                         },
                       );
-                      
+
                       AlertDialog alert = AlertDialog(
                         title: const Text("Warning"),
                         content: const Text("Do not leave fields blank."),
@@ -310,14 +352,10 @@ class FaceSwapperState extends State<FaceSwapper> {
               const SizedBox(
                 height: 60,
               ),
-              
-              
               const Text("Asenkron işlemler burada yapılacak"),
-
               const SizedBox(
                 height: 60,
               ),
-              
             ],
           ),
         ),
