@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:face_swapper/prompts/prompts.dart' as prompts;
+//import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
 class FaceSwapper extends StatefulWidget {
   const FaceSwapper({super.key});
@@ -83,7 +83,7 @@ class FaceSwapperState extends State<FaceSwapper> {
         title: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Text(
-            "Oxo Games",
+            "Oxo Swapper",
             style: GoogleFonts.aclonica(fontSize: 28, color: Colors.white),
           ),
         ),
@@ -112,175 +112,224 @@ class FaceSwapperState extends State<FaceSwapper> {
         },
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Container(
-                padding: const EdgeInsets.all(26),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              setState(() {
-                                selected = "facebook";
-                                selectedImage = "assets/exemplary_man.png";
-
-                                isClicked = "facebook";
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 56,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: isClicked == "facebook" ? 4 : 0),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(55)),
-                                    color: Colors.deepPurple),
-                                child: const ClipOval(
-                                  child: Image(
-                                      image: AssetImage("assets/bald_man.PNG")),
-                                ),
-                              ),
-                            )),
-                        const Text(
-                          "Facebook",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selected = "facebook";
-                              selectedImage = "assets/exemplary_man.png";
-                            });
-                          },
-                          child: const Image(
-                            image: AssetImage("assets/facebook.png"),
-                            width: 45,
-                          ),
-                        )
-                      ],
-                    )),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: Column(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              setState(() {
-                                selected = "linkedin";
-                                selectedImage = "assets/exemplary_man.png";
-
-                                isClicked = "linkedin";
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 56,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: isClicked == "linkedin" ? 4 : 0),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(55)),
-                                    color: Colors.deepPurple),
-                                child: const ClipOval(
-                                  child: Image(
-                                      image: AssetImage("assets/bald_man.PNG")),
-                                ),
-                              ),
-                            )),
-                        const Text(
-                          "LinkedIn",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selected = "linkedin";
-                              selectedImage = "assets/exemplary_man.png";
-                            });
-                          },
-                          child: const Image(
-                            image: AssetImage("assets/linkedin.png"),
-                            width: 45,
-                          ),
-                        )
-                      ],
-                    )),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: Column(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              setState(() {
-                                selected = "instagram";
-                                selectedImage = "assets/exemplary_man.png";
-
-                                isClicked = "instagram";
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 56,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width:
-                                            isClicked == "instagram" ? 4 : 0),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(55)),
-                                    color: Colors.deepPurple),
-                                child: const ClipOval(
-                                  child: Image(
-                                      image: AssetImage("assets/bald_man.PNG")),
-                                ),
-                              ),
-                            )),
-                        const Text(
-                          "Instagram",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selected = "instagram";
-                              selectedImage = "assets/exemplary_man.png";
-                            });
-                          },
-                          child: const Image(
-                            image: AssetImage("assets/instagram.png"),
-                            width: 45,
-                          ),
-                        )
-                      ],
-                    )),
-                  ],
-                ),
-              ),
               const SizedBox(
                 height: 35,
               ),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: const Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Select Style",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                width: 13,
+                              ),
+                              Text(
+                                "Optional",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "See All",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: Colors.white,
+                                size: 13,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  )),
+              Container(
+                  margin: const EdgeInsets.only(
+                      top: 20, right: 15, bottom: 20, left: 15),
+                  child: SingleChildScrollView(
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selected = "facebook";
+                                    selectedImage = "assets/exemplary_man.png";
+
+                                    isClicked = "facebook";
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: isClicked == "facebook"
+                                          ? Border.all(
+                                              color: Colors.purple.shade800,
+                                              width: 3)
+                                          : null,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    child: Container(
+                                      transform: Matrix4.translationValues(
+                                          0.0, -7.0, 0.0),
+                                      child: const Image(
+                                        image: AssetImage(
+                                            "assets/exemplary_man.png"),
+                                        width: 50,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selected = "facebook";
+                                  selectedImage = "assets/exemplary_man.png";
+                                });
+                              },
+                              child: const Text(
+                                "Facebook",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selected = "linkedin";
+                                    selectedImage = "assets/exemplary_man.png";
+
+                                    isClicked = "linkedin";
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: isClicked == "linkedin"
+                                          ? Border.all(
+                                              color: Colors.purple, width: 3)
+                                          : null,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    child: Container(
+                                      transform: Matrix4.translationValues(
+                                          0.0, -7.0, 0.0),
+                                      child: const Image(
+                                        image: AssetImage(
+                                            "assets/exemplary_man.png"),
+                                        width: 50,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selected = "linkedin";
+                                  selectedImage = "assets/exemplary_man.png";
+                                });
+                              },
+                              child: const Text(
+                                "LinkedIn",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selected = "instagram";
+                                    selectedImage = "assets/exemplary_man.png";
+
+                                    isClicked = "instagram";
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: isClicked == "instagram"
+                                          ? Border.all(
+                                              color: Colors.purple, width: 2.5)
+                                          : null,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50))),
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    child: Container(
+                                      transform: Matrix4.translationValues(
+                                          0.0, -7.0, 0.0),
+                                      child: const Image(
+                                        image: AssetImage(
+                                            "assets/exemplary_man.png"),
+                                        width: 50,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selected = "instagram";
+                                  selectedImage = "assets/exemplary_man.png";
+                                });
+                              },
+                              child: const Text(
+                                "instagram",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )),
+                      ],
+                    ),
+                  )),
+              const SizedBox(
+                height: 15,
+              ),
               Align(
                   alignment: Alignment.center,
-                  heightFactor: 1.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -316,7 +365,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                         ),
                       ),
                       const SizedBox(
-                        width: 30,
+                        width: 20,
                       ),
                       ElevatedButton(
                         style: ButtonStyle(
@@ -371,24 +420,27 @@ class FaceSwapperState extends State<FaceSwapper> {
                     ),
               pingImageResult == null
                   ? const SizedBox(
-                      height: 40,
+                      height: 80,
                     )
                   : const SizedBox(
                       height: 0,
                     ),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 40),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: pingImageResult == null || selected == ""
+                          ? const Color.fromRGBO(59, 42, 94, 1)
+                          : const Color.fromRGBO(120,82,185, 1),
                       shadowColor: Colors.black87,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(14)),
                       minimumSize:
-                          const Size(double.infinity, 55), //////// HERE
-                      side: const BorderSide(width: 2, color: Colors.white12)),
-                  onPressed: () async {
+                          const Size(double.infinity, 65), //////// HERE
+                      side: const BorderSide(
+                          width: 2, color: Color.fromRGBO(59, 42, 94, 1))),
+                  onPressed:  () async {
                     if (pingImageResult != null && selected != "") {
                       setState(() {
                         itClicked = true;
