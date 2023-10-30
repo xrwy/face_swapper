@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
@@ -71,9 +72,36 @@ class FaceSwapperState extends State<FaceSwapper> {
   String selectedImage = "";
   bool itClicked = false;
 
+  String isClicked = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
+      appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            "Oxo Games",
+            style: GoogleFonts.aclonica(fontSize: 28, color: Colors.white),
+          ),
+        ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            margin: const EdgeInsets.only(right: 16, top: 5),
+            decoration: BoxDecoration(
+                border: Border.all(width: 3, color: Colors.grey.shade800),
+                borderRadius: const BorderRadius.all(Radius.circular(50))),
+            child: const Icon(
+              IconData(0xe491, fontFamily: 'MaterialIcons'),
+              color: Colors.white,
+            ),
+          ),
+        ],
+        toolbarHeight: 82,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           setState(() {
@@ -89,31 +117,6 @@ class FaceSwapperState extends State<FaceSwapper> {
               const SizedBox(
                 height: 50,
               ),
-              /*
-              * selected == "facebook"
-                  ? const Center(
-                      child: Image(
-                        image: AssetImage("assets/exemplary_man.png"),
-                        width: 200,
-                      ),
-                    )
-                  : selected == "linkedin"
-                      ? const Center(
-                          child: Image(
-                            image: AssetImage("assets/exemplary_man.png"),
-                            width: 200,
-                          ),
-                        )
-                      : selected == "instagram"
-                          ? const Center(
-                              child: Image(
-                              image: AssetImage("assets/exemplary_man.png"),
-                              width: 200,
-                            ))
-                          : const SizedBox(
-                              height: 0,
-                            ),
-              * */
               Container(
                 padding: const EdgeInsets.all(26),
                 child: Row(
@@ -126,13 +129,23 @@ class FaceSwapperState extends State<FaceSwapper> {
                               setState(() {
                                 selected = "facebook";
                                 selectedImage = "assets/exemplary_man.png";
+
+                                isClicked = "facebook";
                               });
                             },
-                            child: const CircleAvatar(
-                              radius: 50,
-                              child: ClipOval(
-                                child: Image(
-                                    image: AssetImage("assets/bald_man.PNG")),
+                            child: CircleAvatar(
+                              radius: 56,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: isClicked == "facebook" ? 4 : 0),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(55)),
+                                    color: Colors.deepPurple),
+                                child: const ClipOval(
+                                  child: Image(
+                                      image: AssetImage("assets/bald_man.PNG")),
+                                ),
                               ),
                             )),
                         const Text(
@@ -167,13 +180,23 @@ class FaceSwapperState extends State<FaceSwapper> {
                               setState(() {
                                 selected = "linkedin";
                                 selectedImage = "assets/exemplary_man.png";
+
+                                isClicked = "linkedin";
                               });
                             },
-                            child: const CircleAvatar(
-                              radius: 50,
-                              child: ClipOval(
-                                child: Image(
-                                    image: AssetImage("assets/bald_man.PNG")),
+                            child: CircleAvatar(
+                              radius: 56,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: isClicked == "linkedin" ? 4 : 0),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(55)),
+                                    color: Colors.deepPurple),
+                                child: const ClipOval(
+                                  child: Image(
+                                      image: AssetImage("assets/bald_man.PNG")),
+                                ),
                               ),
                             )),
                         const Text(
@@ -208,13 +231,24 @@ class FaceSwapperState extends State<FaceSwapper> {
                               setState(() {
                                 selected = "instagram";
                                 selectedImage = "assets/exemplary_man.png";
+
+                                isClicked = "instagram";
                               });
                             },
-                            child: const CircleAvatar(
-                              radius: 50,
-                              child: ClipOval(
-                                child: Image(
-                                    image: AssetImage("assets/bald_man.PNG")),
+                            child: CircleAvatar(
+                              radius: 56,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width:
+                                            isClicked == "instagram" ? 4 : 0),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(55)),
+                                    color: Colors.deepPurple),
+                                child: const ClipOval(
+                                  child: Image(
+                                      image: AssetImage("assets/bald_man.PNG")),
+                                ),
                               ),
                             )),
                         const Text(
@@ -446,20 +480,24 @@ class FaceSwapperState extends State<FaceSwapper> {
                         } else if (!snapshot.hasData) {
                           return Container(
                             margin: const EdgeInsets.all(16.0),
-                            padding: const EdgeInsets.only(top: 12, right: 30, bottom: 12, left: 30),
+                            padding: const EdgeInsets.only(
+                                top: 12, right: 30, bottom: 12, left: 30),
                             decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Colors.red)
-                            ),
+                                border:
+                                    Border.all(width: 2, color: Colors.red)),
                             child: Text(
                               "No Data",
                               style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.w700, color: Colors.red.shade400),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.red.shade400),
                             ),
                           );
                         } else if (snapshot.data!.endsWith(".png") ||
-                            snapshot.data!.endsWith(".jpeg") ||
+                            snapshot.data!.endsWith(".jpg") ||
                             snapshot.data!.endsWith(".bmp") ||
-                            snapshot.data!.endsWith(".psd")) {
+                            snapshot.data!.endsWith(".psd") ||
+                            snapshot.data!.endsWith(".jpeg")) {
                           return Container(
                               padding: const EdgeInsets.all(18.0),
                               child: Align(

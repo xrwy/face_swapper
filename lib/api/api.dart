@@ -64,13 +64,13 @@ class Api {
           await assetImageToFile(selectedImage, selectedImage.split("/")[1]);
 
       var response = await Api.uploadImageToImgbb(pingImageResult!.path);
-      var response_2 = await Api.uploadImageToImgbb(file!.path);
+      var response_2 = await Api.uploadImageToImgbb(file.path);
 
       Api.response = response!;
       Api.response_2 = response_2!;
 
       if ((response != null && response['url'] is String) &&
-          (response_2 != null && response_2['url'])) {
+          (response_2 != null && response_2['url'] is String)) {
         final body = json.encode({
           "version":
               "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
@@ -88,12 +88,30 @@ class Api {
         final postResponse = await http.post(Uri.parse(Replicate().apiUrl),
             body: body, headers: headers);
 
-        if (postResponse.statusCode == 200) {
-          var result = jsonDecode(postResponse.body);
+        if (postResponse.statusCode == 201) {
+          final predictionId = json.decode(postResponse.body)['id'];
+          final getUrl = "${Replicate().apiUrl}/$predictionId";
 
-          return result["output"];
+          while (true) {
+            final checkResponse =
+                await http.get(Uri.parse(getUrl), headers: headers);
+            final status = json.decode(checkResponse.body)['status'];
+
+            if (status == "succeeded") {
+              final imageUrl = json.decode(checkResponse.body)['output'];
+              if (imageUrl is List) {
+                return imageUrl[0];
+              } else {
+                return imageUrl;
+              }
+            } else if (status == "failed") {
+              throw Exception("An error occurred while loading the image.");
+            }
+            await Future.delayed(const Duration(seconds: 2));
+          }
         } else {
-          return "Tamam Değildir.";
+          throw Exception(
+              "The request failed. Status code: ${postResponse.statusCode}");
         }
       } else {
         throw Exception(

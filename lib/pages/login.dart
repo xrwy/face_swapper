@@ -98,11 +98,11 @@ class LoginState extends State<Login> {
                                       border: Border(
                                           bottom: BorderSide(
                                               color: Colors.grey.shade200))),
-                                  child: const TextField(
+                                  child: TextField(
                                     decoration: InputDecoration(
                                         hintText: "Email or Phone Number",
                                         helperStyle:
-                                            TextStyle(color: Colors.grey),
+                                            TextStyle(color: Colors.grey.shade800),
                                         border: InputBorder.none),
                                   ),
                                 ),
