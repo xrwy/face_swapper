@@ -289,7 +289,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                                   decoration: BoxDecoration(
                                       border: isClicked == "instagram"
                                           ? Border.all(
-                                              color: Colors.purple, width: 2.5)
+                                              color: Colors.purple, width: 3)
                                           : null,
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(50))),
