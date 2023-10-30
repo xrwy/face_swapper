@@ -42,7 +42,7 @@ class Api {
     }
   }
 
-  static Future<File> assetImageToFile(
+  /*static Future<File> assetImageToFile(
       String assetPath, String fileName) async {
     final ByteData data = await rootBundle.load(assetPath);
     final Directory tempDir = await getTemporaryDirectory();
@@ -52,21 +52,64 @@ class Api {
     await file.writeAsBytes(data.buffer.asUint8List());
 
     return file;
+  }*/
+
+  static Future<dynamic> createImage(String socialMediaPrompt) async {
+    const url = 'https://stablediffusionapi.com/api/v4/dreambooth';
+    final headers = {
+      'Content-Type': 'application/json',
+    };
+    final body = jsonEncode({
+      "key": "api-key",
+      "model_id": "ae-sdxl-v1",
+      "prompt": socialMediaPrompt,
+      "negative_prompt":
+          "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",
+      "width": "512",
+      "height": "512",
+      "samples": "1",
+      "num_inference_steps": "30",
+      "seed": null,
+      "guidance_scale": 7.5,
+      "webhook": null,
+      "track_id": null
+    });
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      return {'error': response.reasonPhrase};
+    }
   }
 
   static Map<String, dynamic> response = {};
   static Map<String, dynamic> response_2 = {};
 
   static Future<String> faceSwapper(
-      File? pingImageResult, String selectedImage) async {
+      File? pingImageResult,
+      /*String selectedImage,*/
+      String selectedPrompt) async {
     try {
-      var file =
-          await assetImageToFile(selectedImage, selectedImage.split("/")[1]);
+      /*var file =
+          await assetImageToFile(selectedImage, selectedImage.split("/")[1]);*/
 
-      var response = await Api.uploadImageToImgbb(pingImageResult!.path);
-      var response_2 = await Api.uploadImageToImgbb(file.path);
+      var response_1 = await createImage(selectedPrompt);
+      print(response_1);
 
-      Api.response = response!;
+      return "Deneme";
+
+
+      var response_2 = await Api.uploadImageToImgbb(pingImageResult!.path);
+
+      //var response_2 = await Api.uploadImageToImgbb(file.path);
+
+      Api.response = response_1!;
       Api.response_2 = response_2!;
 
       if ((response != null && response['url'] is String) &&
@@ -76,7 +119,8 @@ class Api {
               "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
           "input": {
             "swap_image": Api.response['url'],
-            "target_image": Api.response_2['url']
+            "target_image":
+                Api.response_2['url'] // Kullanıcının kendi fotoğrafı yüzü
           },
         });
 

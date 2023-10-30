@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 
-//import 'package:face_swapper/prompts/prompts.dart' as prompts;
+import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
 class FaceSwapper extends StatefulWidget {
   const FaceSwapper({super.key});
@@ -18,6 +18,13 @@ class FaceSwapper extends StatefulWidget {
 
 class FaceSwapperState extends State<FaceSwapper> {
   File? pingImageResult; // initialize null
+  String selected = "";
+  //String selectedImage = "";
+  bool itClicked = false;
+
+  String isClicked = "";
+
+  String selectedPrompt = "";
 
   Future selectImage() async {
     try {
@@ -68,12 +75,6 @@ class FaceSwapperState extends State<FaceSwapper> {
     ));
   }
 
-  String selected = "";
-  String selectedImage = "";
-  bool itClicked = false;
-
-  String isClicked = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +108,7 @@ class FaceSwapperState extends State<FaceSwapper> {
           setState(() {
             selected = "";
             pingImageResult = null;
-            selectedImage = "";
+            //selectedImage = "";
           });
         },
         child: SingleChildScrollView(
@@ -181,9 +182,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                                 onPressed: () {
                                   setState(() {
                                     selected = "facebook";
-                                    selectedImage = "assets/exemplary_man.png";
-
+                                    //selectedImage = "assets/exemplary_man.png";
                                     isClicked = "facebook";
+                                    selectedPrompt = prompts.facebook;
                                   });
                                 },
                                 child: Container(
@@ -212,7 +213,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                               onPressed: () {
                                 setState(() {
                                   selected = "facebook";
-                                  selectedImage = "assets/exemplary_man.png";
+                                  //selectedImage = "assets/exemplary_man.png";
+                                  isClicked = "facebook";
+                                  selectedPrompt = prompts.facebook;
                                 });
                               },
                               child: const Text(
@@ -231,9 +234,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                                 onPressed: () {
                                   setState(() {
                                     selected = "linkedin";
-                                    selectedImage = "assets/exemplary_man.png";
-
+                                    //selectedImage = "assets/exemplary_man.png";
                                     isClicked = "linkedin";
+                                    selectedPrompt = prompts.linkedin;
                                   });
                                 },
                                 child: Container(
@@ -261,7 +264,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                               onPressed: () {
                                 setState(() {
                                   selected = "linkedin";
-                                  selectedImage = "assets/exemplary_man.png";
+                                  //selectedImage = "assets/exemplary_man.png";
+                                  isClicked = "linkedin";
+                                  selectedPrompt = prompts.linkedin;
                                 });
                               },
                               child: const Text(
@@ -280,9 +285,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                                 onPressed: () {
                                   setState(() {
                                     selected = "instagram";
-                                    selectedImage = "assets/exemplary_man.png";
-
+                                    //selectedImage = "assets/exemplary_man.png";
                                     isClicked = "instagram";
+                                    selectedPrompt = prompts.instagram;
                                   });
                                 },
                                 child: Container(
@@ -310,7 +315,9 @@ class FaceSwapperState extends State<FaceSwapper> {
                               onPressed: () {
                                 setState(() {
                                   selected = "instagram";
-                                  selectedImage = "assets/exemplary_man.png";
+                                  //selectedImage = "assets/exemplary_man.png";
+                                  isClicked = "instagram";
+                                  selectedPrompt = prompts.instagram;
                                 });
                               },
                               child: const Text(
@@ -431,7 +438,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: pingImageResult == null || selected == ""
                           ? const Color.fromRGBO(59, 42, 94, 1)
-                          : const Color.fromRGBO(120,82,185, 1),
+                          : const Color.fromRGBO(120, 82, 185, 1),
                       shadowColor: Colors.black87,
                       elevation: 4,
                       shape: RoundedRectangleBorder(
@@ -440,44 +447,13 @@ class FaceSwapperState extends State<FaceSwapper> {
                           const Size(double.infinity, 65), //////// HERE
                       side: const BorderSide(
                           width: 2, color: Color.fromRGBO(59, 42, 94, 1))),
-                  onPressed:  () async {
-                    if (pingImageResult != null && selected != "") {
+                  onPressed: () async {
+                    if (pingImageResult != null &&
+                        selected != "" &&
+                        selectedPrompt != "") {
                       setState(() {
                         itClicked = true;
                       });
-
-                      /*
-                      *
-                      * switch (selected) {
-                        case prompts.facebook:
-                          {
-                            try {
-                              await Api.imageFromUserRequest();
-                            } catch (e) {
-                              print(e.toString());
-                            }
-                            // some codes
-                          }
-                        case prompts.instagram:
-                          {
-                            try {
-                              await Api.imageFromUserRequest();
-                            } catch (e) {
-                              print(e.toString());
-                            }
-                            // some codes
-                          }
-                        case prompts.linkedin:
-                          {
-                            try {
-                              await Api.imageFromUserRequest();
-                            } catch (e) {
-                              print(e.toString());
-                            }
-                            // some codes
-                          }
-                      }*/
-                      // some codes
                     } else {
                       Widget cancelButton = TextButton(
                         child: const Text("Cancel"),
@@ -512,9 +488,12 @@ class FaceSwapperState extends State<FaceSwapper> {
               const SizedBox(
                 height: 40,
               ),
-              pingImageResult != null && selected != "" && itClicked == true
+              pingImageResult != null &&
+                      selected != "" &&
+                      itClicked == true &&
+                      selectedPrompt != ""
                   ? FutureBuilder<String>(
-                      future: Api.faceSwapper(pingImageResult, selectedImage),
+                      future: Api.faceSwapper(pingImageResult, /*selectedImage,*/ selectedPrompt),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -555,7 +534,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    margin: const EdgeInsets.only(top: 30.0),
+                                    margin: const EdgeInsets.only(top: 40.0),
                                     child: Image.network(
                                       snapshot.data!,
                                     ),
