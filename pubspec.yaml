@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  http: ^1.1.0
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +30,9 @@ flutter:
     - assets/github.png
     - assets/google.png
     - assets/oxogames.png
+    - assets/bald_man.PNG
+    - assets/man_with_hair.PNG
+    - assets/facebook.png
+    - assets/linkedin.png
+    - assets/instagram.png
 

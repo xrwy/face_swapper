@@ -1,3 +1,4 @@
+import 'package:face_swapper/pages/face_swapper.dart';
 import 'package:face_swapper/pages/login.dart';
 import 'package:face_swapper/pages/register.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Login(),
+      home: const FaceSwapper(),
     );
   }
 }
