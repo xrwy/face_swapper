@@ -29,7 +29,47 @@ class FaceSwapperState extends State<FaceSwapper> {
     }
   }
 
+  circularProgressIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(top: 60.0),
+      child: const CircularProgressIndicator(),
+    );
+  }
+
+  snapShotHasError(snapshot) {
+    return Center(
+        child: Container(
+      margin: const EdgeInsets.only(bottom: 35.0, right: 29.0, left: 29.0),
+      padding: const EdgeInsets.only(
+          top: 20.0, right: 45.0, bottom: 20.0, left: 45.0),
+      decoration: const BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      child: Container(
+        margin: null,
+        child: Column(
+          children: [
+            const Text(
+              'Error',
+              style: TextStyle(
+                  fontSize: 22.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              '${snapshot.error}',
+              style: const TextStyle(fontSize: 20.0, color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    ));
+  }
+
   String selected = "";
+  String selectedImage = "";
+  bool itClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +79,7 @@ class FaceSwapperState extends State<FaceSwapper> {
           setState(() {
             selected = "";
             pingImageResult = null;
+            selectedImage = "";
           });
         },
         child: SingleChildScrollView(
@@ -46,40 +87,33 @@ class FaceSwapperState extends State<FaceSwapper> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 70,
+                height: 50,
               ),
-              pingImageResult != null
-                  ? Center(
-                      child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image(
-                              image: FileImage(pingImageResult!),
-                              width: 200,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            "*Now click on the icon of the media you want to select.",
-                            style: TextStyle(color: Colors.red.shade400),
-                          )
-                        ],
-                      ),
-                    ))
-                  : const Center(
+              /*
+              * selected == "facebook"
+                  ? const Center(
                       child: Image(
-                        image: AssetImage("assets/man_with_hair.PNG"),
+                        image: AssetImage("assets/exemplary_man.png"),
                         width: 200,
                       ),
-                    ),
-              const SizedBox(
-                height: 10,
-              ),
+                    )
+                  : selected == "linkedin"
+                      ? const Center(
+                          child: Image(
+                            image: AssetImage("assets/exemplary_man.png"),
+                            width: 200,
+                          ),
+                        )
+                      : selected == "instagram"
+                          ? const Center(
+                              child: Image(
+                              image: AssetImage("assets/exemplary_man.png"),
+                              width: 200,
+                            ))
+                          : const SizedBox(
+                              height: 0,
+                            ),
+              * */
               Container(
                 padding: const EdgeInsets.all(26),
                 child: Row(
@@ -87,16 +121,20 @@ class FaceSwapperState extends State<FaceSwapper> {
                     Expanded(
                         child: Column(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          child: ClipOval(
-                            child:
-                                Image(image: AssetImage("assets/bald_man.PNG")),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selected = "facebook";
+                                selectedImage = "assets/exemplary_man.png";
+                              });
+                            },
+                            child: const CircleAvatar(
+                              radius: 50,
+                              child: ClipOval(
+                                child: Image(
+                                    image: AssetImage("assets/bald_man.PNG")),
+                              ),
+                            )),
                         const Text(
                           "Facebook",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -108,11 +146,12 @@ class FaceSwapperState extends State<FaceSwapper> {
                           onPressed: () {
                             setState(() {
                               selected = "facebook";
+                              selectedImage = "assets/exemplary_man.png";
                             });
                           },
                           child: const Image(
                             image: AssetImage("assets/facebook.png"),
-                            width: 36,
+                            width: 45,
                           ),
                         )
                       ],
@@ -123,16 +162,20 @@ class FaceSwapperState extends State<FaceSwapper> {
                     Expanded(
                         child: Column(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          child: ClipOval(
-                            child:
-                                Image(image: AssetImage("assets/bald_man.PNG")),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selected = "linkedin";
+                                selectedImage = "assets/exemplary_man.png";
+                              });
+                            },
+                            child: const CircleAvatar(
+                              radius: 50,
+                              child: ClipOval(
+                                child: Image(
+                                    image: AssetImage("assets/bald_man.PNG")),
+                              ),
+                            )),
                         const Text(
                           "LinkedIn",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -144,11 +187,12 @@ class FaceSwapperState extends State<FaceSwapper> {
                           onPressed: () {
                             setState(() {
                               selected = "linkedin";
+                              selectedImage = "assets/exemplary_man.png";
                             });
                           },
                           child: const Image(
                             image: AssetImage("assets/linkedin.png"),
-                            width: 36,
+                            width: 45,
                           ),
                         )
                       ],
@@ -159,16 +203,20 @@ class FaceSwapperState extends State<FaceSwapper> {
                     Expanded(
                         child: Column(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          child: ClipOval(
-                            child:
-                                Image(image: AssetImage("assets/bald_man.PNG")),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
+                        TextButton(
+                            onPressed: () {
+                              setState(() {
+                                selected = "instagram";
+                                selectedImage = "assets/exemplary_man.png";
+                              });
+                            },
+                            child: const CircleAvatar(
+                              radius: 50,
+                              child: ClipOval(
+                                child: Image(
+                                    image: AssetImage("assets/bald_man.PNG")),
+                              ),
+                            )),
                         const Text(
                           "Instagram",
                           style: TextStyle(fontWeight: FontWeight.bold),
@@ -180,11 +228,12 @@ class FaceSwapperState extends State<FaceSwapper> {
                           onPressed: () {
                             setState(() {
                               selected = "instagram";
+                              selectedImage = "assets/exemplary_man.png";
                             });
                           },
                           child: const Image(
                             image: AssetImage("assets/instagram.png"),
-                            width: 36,
+                            width: 45,
                           ),
                         )
                       ],
@@ -257,8 +306,10 @@ class FaceSwapperState extends State<FaceSwapper> {
                           ),
                         ),
                         onPressed: () {
-                          selected = "";
-                          pingImageResult = null;
+                          setState(() {
+                            selected = "";
+                            pingImageResult = null;
+                          });
                         },
                         child: const Text(
                           'Clear',
@@ -271,9 +322,26 @@ class FaceSwapperState extends State<FaceSwapper> {
                       )
                     ],
                   )),
-              const SizedBox(
-                height: 45,
-              ),
+              pingImageResult != null
+                  ? Container(
+                      margin: const EdgeInsets.all(50),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image(
+                          image: FileImage(pingImageResult!),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
+              pingImageResult == null
+                  ? const SizedBox(
+                      height: 40,
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40),
                 child: ElevatedButton(
@@ -288,7 +356,13 @@ class FaceSwapperState extends State<FaceSwapper> {
                       side: const BorderSide(width: 2, color: Colors.white12)),
                   onPressed: () async {
                     if (pingImageResult != null && selected != "") {
-                      switch (selected) {
+                      setState(() {
+                        itClicked = true;
+                      });
+
+                      /*
+                      *
+                      * switch (selected) {
                         case prompts.facebook:
                           {
                             try {
@@ -316,7 +390,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                             }
                             // some codes
                           }
-                      }
+                      }*/
                       // some codes
                     } else {
                       Widget cancelButton = TextButton(
@@ -350,9 +424,59 @@ class FaceSwapperState extends State<FaceSwapper> {
                 ),
               ),
               const SizedBox(
-                height: 60,
+                height: 40,
               ),
-              const Text("Asenkron işlemler burada yapılacak"),
+              pingImageResult != null && selected != "" && itClicked == true
+                  ? FutureBuilder<String>(
+                      future: Api.faceSwapper(pingImageResult, selectedImage),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 70.0),
+                              child: circularProgressIndicator(),
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Align(
+                              alignment: Alignment.center,
+                              child: snapShotHasError(snapshot));
+                        } else if (!snapshot.hasData) {
+                          return Container(
+                            margin: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.only(top: 12, right: 30, bottom: 12, left: 30),
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2, color: Colors.red)
+                            ),
+                            child: Text(
+                              "No Data",
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w700, color: Colors.red.shade400),
+                            ),
+                          );
+                        } else if (snapshot.data!.endsWith(".png") ||
+                            snapshot.data!.endsWith(".jpeg") ||
+                            snapshot.data!.endsWith(".bmp") ||
+                            snapshot.data!.endsWith(".psd")) {
+                          return Container(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(top: 30.0),
+                                    child: Image.network(
+                                      snapshot.data!,
+                                    ),
+                                  )));
+                        } else {
+                          return const Align(
+                              alignment: Alignment.center,
+                              child: Text("Error"));
+                        }
+                      })
+                  : const SizedBox(),
               const SizedBox(
                 height: 60,
               ),
