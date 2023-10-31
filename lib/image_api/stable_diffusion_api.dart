@@ -43,11 +43,16 @@ class StableDiffusionApi extends ImageApiProvider  {
       "vae": null
     });
 
+    print("afewfer");
+
+
     final response = await http.post(
       Uri.parse(apiKey),
       headers: headers,
       body: body,
     );
+
+
 
     var output = jsonDecode(response.body)["output"];
     if (output != null && output.isNotEmpty) {
