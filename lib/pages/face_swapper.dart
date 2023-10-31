@@ -19,12 +19,11 @@ class FaceSwapper extends StatefulWidget {
 class FaceSwapperState extends State<FaceSwapper> {
   File? pingImageResult; // initialize null
   String selected = "";
-  //String selectedImage = "";
   bool itClicked = false;
-
   String isClicked = "";
-
   String selectedPrompt = "";
+
+  String responseImage = "";
 
   Future selectImage() async {
     try {
@@ -75,17 +74,34 @@ class FaceSwapperState extends State<FaceSwapper> {
     ));
   }
 
+  tappedButton(String responseImageParam) async {
+    await Future.delayed(const Duration(seconds: 0));
+
+    setState(() {
+      pingImageResult = null;
+      selected = "";
+      itClicked = false;
+      isClicked = "";
+      selectedPrompt = "";
+
+      responseImage = responseImageParam;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Text(
-            "Oxo Swapper",
-            style: GoogleFonts.aclonica(fontSize: 28, color: Colors.white),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: Text(
+              "Oxo Swapper",
+              style: GoogleFonts.aclonica(fontSize: 28, color: Colors.white),
+            ),
           ),
         ),
         actions: [
@@ -397,8 +413,12 @@ class FaceSwapperState extends State<FaceSwapper> {
                         ),
                         onPressed: () {
                           setState(() {
-                            selected = "";
                             pingImageResult = null;
+                            selected = "";
+                            itClicked = false;
+                            selectedPrompt = "";
+                            isClicked = "";
+                            responseImage = "";
                           });
                         },
                         child: const Text(
@@ -427,7 +447,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                     ),
               pingImageResult == null
                   ? const SizedBox(
-                      height: 80,
+                      height: 50,
                     )
                   : const SizedBox(
                       height: 0,
@@ -485,22 +505,23 @@ class FaceSwapperState extends State<FaceSwapper> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 40,
+              SizedBox(
+                height: responseImage != "" ? 0 : 45,
               ),
               pingImageResult != null &&
                       selected != "" &&
                       itClicked == true &&
                       selectedPrompt != ""
                   ? FutureBuilder<String>(
-                      future: Api.faceSwapper(pingImageResult, /*selectedImage,*/ selectedPrompt),
+                      future: Api.faceSwapper(
+                          pingImageResult, /*selectedImage,*/ selectedPrompt),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Align(
                             alignment: Alignment.center,
                             child: Container(
-                              margin: const EdgeInsets.only(bottom: 70.0),
+                              margin: const EdgeInsets.only(bottom: 80.0),
                               child: circularProgressIndicator(),
                             ),
                           );
@@ -529,16 +550,11 @@ class FaceSwapperState extends State<FaceSwapper> {
                             snapshot.data!.endsWith(".bmp") ||
                             snapshot.data!.endsWith(".psd") ||
                             snapshot.data!.endsWith(".jpeg")) {
-                          return Container(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 40.0),
-                                    child: Image.network(
-                                      snapshot.data!,
-                                    ),
-                                  )));
+                          responseImage = snapshot.data!;
+
+                          tappedButton(responseImage);
+
+                          return const SizedBox();
                         } else {
                           return const Align(
                               alignment: Alignment.center,
@@ -546,9 +562,18 @@ class FaceSwapperState extends State<FaceSwapper> {
                         }
                       })
                   : const SizedBox(),
-              const SizedBox(
-                height: 60,
-              ),
+              responseImage != ""
+                  ? Container(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 40.0),
+                            child: Image.network(
+                              responseImage,
+                            ),
+                          )))
+                  : const SizedBox(),
             ],
           ),
         ),

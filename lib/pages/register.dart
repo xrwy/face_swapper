@@ -1,6 +1,8 @@
 import 'package:face_swapper/pages/login.dart';
 import 'package:flutter/material.dart';
 
+import 'face_swapper.dart';
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -15,7 +17,7 @@ class RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () async{},
+        onRefresh: () async {},
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -28,8 +30,43 @@ class RegisterState extends State<Register> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.only(
+                        top: 50, right: 0, bottom: 0, left: 0),
+                    child: TextButton(
+                      onPressed: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Warning'),
+                                content: const Text(
+                                    "There is no page to turn back to!"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
-                    height: 80.0,
+                    height: 30.0,
                   ),
                   const Padding(
                     padding: EdgeInsets.all(20.0),
@@ -38,6 +75,8 @@ class RegisterState extends State<Register> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Register",
@@ -140,22 +179,25 @@ class RegisterState extends State<Register> {
                           const SizedBox(
                             height: 40,
                           ),
-                          Container(
-                            height: 50,
-                            margin: const EdgeInsets.symmetric(horizontal: 50),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.orange.shade900,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "Register",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
+                          TextButton(
+                              onPressed: () {},
+                              child: Container(
+                                height: 50,
+                                margin:
+                                const EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.orange.shade900,
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "Register",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              )),
                           const SizedBox(
                             height: 50,
                           ),
@@ -264,7 +306,7 @@ class RegisterState extends State<Register> {
                                 width: 10,
                               ),
                               SizedBox(
-                                child: ElevatedButton(
+                                child: ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                       shadowColor: Colors.black87,
@@ -283,10 +325,60 @@ class RegisterState extends State<Register> {
                                           builder: (context) => const Login()),
                                     );
                                   },
-                                  child: const Text(
+                                  label: const Text(
                                     "Login",
                                     style: TextStyle(color: Colors.white),
                                   ),
+                                  icon: const Icon(
+                                    IconData(0xe09b,
+                                        fontFamily: 'MaterialIcons',
+                                        matchTextDirection: true),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 30,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child:
+                                const Text("Have you tried Face Changer?"),
+                              ),
+                              SizedBox(
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      shadowColor: Colors.black87,
+                                      elevation: 4,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(50)),
+                                      minimumSize:
+                                      const Size(60, 40), //////// HERE
+                                      side: const BorderSide(
+                                          width: 2, color: Colors.white12)),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const FaceSwapper()),
+                                    );
+                                  },
+                                  label: const Text(
+                                    "Go to Face Changer",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  icon: const Icon(
+                                    IconData(0xe09b,
+                                        fontFamily: 'MaterialIcons',
+                                        matchTextDirection: true),
+                                    color: Colors.white,
+                                  ),
+
                                 ),
                               ),
                             ],

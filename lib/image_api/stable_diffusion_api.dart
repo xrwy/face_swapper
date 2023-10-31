@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:face_swapper/api_provider.dart';
 import 'package:face_swapper/models/stabled_diffusion.dart';
 
 import 'imageApiProvider.dart';
@@ -61,6 +60,8 @@ class StableDiffusionApi extends ImageApiProvider {
         } else {
           return {'error': jsonDecode(response.body)["message"].toString()};
         }
+      }else if (jsonDecode(response.body)["status"] == "error") {
+        return {'error': jsonDecode(response.body)["message"].toString()};
       }
     }
   }
