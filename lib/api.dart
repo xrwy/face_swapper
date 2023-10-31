@@ -13,7 +13,6 @@ class Api {
   static ImageService imageService = ImageService(imageApiProvider: StableDiffusionApi());
   static ImageUploadService imageUploadService = ImageUploadService(imageUploadApiProvider: ImageUpload());
 
-
   static Map<String, dynamic> uploadImageToImg = {};
   static Future<String> faceSwapper(
       File? pingImageResult, String selectedPrompt) async {
