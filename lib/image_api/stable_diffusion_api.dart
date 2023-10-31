@@ -5,8 +5,7 @@ import 'package:face_swapper/models/stabled_diffusion.dart';
 
 import 'imageApiProvider.dart';
 
-
-class StableDiffusionApi extends ImageApiProvider  {
+class StableDiffusionApi extends ImageApiProvider {
   @override
   String apiKey = StabledDiffusion().apiKey;
 
@@ -48,17 +47,21 @@ class StableDiffusionApi extends ImageApiProvider  {
       "vae": null
     });
 
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: headers,
-      body: body,
-    );
+    while (true) {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: headers,
+        body: body,
+      );
 
-    var output = jsonDecode(response.body)["output"];
-    if (output != null && output.isNotEmpty) {
-      return {"image_link": output[0].toString()};
-    } else {
-      return {'error': jsonDecode(response.body)["message"].toString()};
+      if (jsonDecode(response.body)["status"] == "success") {
+        var output = jsonDecode(response.body)["output"];
+        if (output != null && output.isNotEmpty) {
+          return {"image_link": output[0].toString()};
+        } else {
+          return {'error': jsonDecode(response.body)["message"].toString()};
+        }
+      }
     }
   }
 }
