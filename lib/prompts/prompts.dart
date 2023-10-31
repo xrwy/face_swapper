@@ -4,5 +4,5 @@ const String linkedin = "linkedin";
 
 
 String facebookPrompt = "Yüzü solmuş, gömlek tarzı bir üst giymiş bir kişi";
-String linkedInPrompt = "Photo of a business-savvy man individual with a short, neatly combed hairstyle. They are donning a charcoal gray suit with a light blue tie. Their posture is upright, exuding confidence and professionalism. The backdrop is a muted beige color, complementing the overall formal look.";
+String linkedInPrompt = "Photo of a confident-looking individual, focusing primarily on their face, akin to a selfie. They sport a short, neatly styled hairstyle, reminiscent of the image provided. They are wearing a charcoal gray suit with a light blue tie. Their gaze is directed straight at the camera, embodying an aura of confidence and professionalism. The background is muted, emphasizing the subject's poised demeanor.";
 String instagramPrompt = "Arkada yüksek binalarla birlikte spor bir üst ve alt giyen bir kişi";

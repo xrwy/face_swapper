@@ -23,20 +23,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-/*
-
-Dark Modu
-* return MaterialApp(
-      title: 'Face Swapper',
-      themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark().copyWith(
-        inputDecorationTheme: InputDecorationTheme(
-          hintStyle: TextStyle(color: Colors.grey.shade700),
-        ),
-      ),
-      home: const FaceSwapper(),
-    );
-*
-* */
