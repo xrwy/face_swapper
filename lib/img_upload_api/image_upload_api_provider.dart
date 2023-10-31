@@ -1,6 +1,5 @@
-abstract class ImageUploadApiKey {
-  String key = "";
-}
-abstract class ImageUploadApiProvider implements ImageUploadApiKey {
+import 'package:face_swapper/api_provider.dart';
+
+abstract class ImageUploadApiProvider implements ApiProvider {
   Future<dynamic> uploadImageToImg(String? imagePath);
 }

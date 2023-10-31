@@ -1,12 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:face_swapper/image_api/api_provider.dart';
+import 'package:face_swapper/api_provider.dart';
 import 'package:face_swapper/models/stabled_diffusion.dart';
+
+import 'imageApiProvider.dart';
 
 
 class StableDiffusionApi extends ImageApiProvider  {
   @override
-  String apiKey = StabledDiffusion().apiUrl;
+  String apiKey = StabledDiffusion().apiKey;
+
+  @override
+  String apiUrl = StabledDiffusion().apiUrl;
 
   @override
   Future<Map<String, dynamic>> createImage(String socialMediaPrompt) async {
@@ -43,16 +48,11 @@ class StableDiffusionApi extends ImageApiProvider  {
       "vae": null
     });
 
-    print("afewfer");
-
-
     final response = await http.post(
-      Uri.parse(apiKey),
+      Uri.parse(apiUrl),
       headers: headers,
       body: body,
     );
-
-
 
     var output = jsonDecode(response.body)["output"];
     if (output != null && output.isNotEmpty) {

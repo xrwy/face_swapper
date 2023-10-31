@@ -6,7 +6,10 @@ import 'image_upload_api_provider.dart';
 
 class ImageUpload extends ImageUploadApiProvider {
   @override
-  String key = ImgBb().apiKey;
+  String apiKey = ImgBb().apiKey;
+
+  @override
+  String apiUrl = ImgBb().apiUrl;
 
   @override
   Future uploadImageToImg(String? imagePath) async {
@@ -14,7 +17,7 @@ class ImageUpload extends ImageUploadApiProvider {
     final multiPart = await http.MultipartFile.fromPath('image', imagePath!);
 
     final request = http.MultipartRequest('POST', url)
-      ..fields['key'] = key
+      ..fields['key'] = apiKey
       ..fields['expiration'] = "600"
       ..files.add(multiPart);
 
@@ -37,5 +40,4 @@ class ImageUpload extends ImageUploadApiProvider {
       await Future.delayed(const Duration(seconds: 2));
     }
   }
-
 }

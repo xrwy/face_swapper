@@ -1,4 +1,4 @@
-import 'package:face_swapper/image_api/api.dart';
+import 'package:face_swapper/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';

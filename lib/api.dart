@@ -5,9 +5,8 @@ import 'package:face_swapper/image_api/stable_diffusion_api.dart';
 import 'package:face_swapper/models/replicate.dart';
 import 'package:http/http.dart' as http;
 
-import '../../models/imgbb.dart';
-import '../img_upload_api/image_upload.dart';
-import '../img_upload_api/img_upload_service.dart';
+import 'img_upload_api/image_upload.dart';
+import 'img_upload_api/img_upload_service.dart';
 
 
 class Api {
@@ -15,7 +14,7 @@ class Api {
   static ImageUploadService imageUploadService = ImageUploadService(imageUploadApiProvider: ImageUpload());
 
 
-  static Map<String, dynamic> uploadImageToImgbb = {};
+  static Map<String, dynamic> uploadImageToImg = {};
   static Future<String> faceSwapper(
       File? pingImageResult, String selectedPrompt) async {
     try {
@@ -27,7 +26,7 @@ class Api {
       } else {
         var uploadImageToImgbb =
             await imageUploadService.imageUpload(pingImageResult!.path);
-        Api.uploadImageToImgbb = uploadImageToImgbb!;
+        Api.uploadImageToImg = uploadImageToImgbb!;
 
         if ((uploadImageToImgbb['url'] is String &&
             uploadImageToImgbb['url'].toString().startsWith("http") ==
@@ -36,7 +35,7 @@ class Api {
             "version":
                 "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
             "input": {
-              "swap_image": Api.uploadImageToImgbb['url'],
+              "swap_image": Api.uploadImageToImg['url'],
               "target_image": createImageResponse["image_link"]
             },
           });
