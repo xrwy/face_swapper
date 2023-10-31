@@ -22,33 +22,34 @@ class Api {
       ..fields['expiration'] = "600"
       ..files.add(multiPart);
 
-    var uploadImageToImgbbRResponse;
+    http.StreamedResponse uploadImageToImgbbRResponse;
 
     while (true) {
       try {
         uploadImageToImgbbRResponse = await request.send();
-
         if (uploadImageToImgbbRResponse.statusCode == 200) {
-          final responseBody = await uploadImageToImgbbRResponse.stream.bytesToString();
+          final responseBody =
+              await uploadImageToImgbbRResponse.stream.bytesToString();
           final Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
 
           return {
             "url": jsonResponse['data']['url'],
           };
         }
-      }catch (e) {
-        return {
+      } catch (e) {
+        return {"error": "eeeeee"};
+
+        /*
+        *
+        * {
           "status_code": uploadImageToImgbbRResponse['status_code'],
           "error": uploadImageToImgbbRResponse['error']['message'],
           "status_txt": uploadImageToImgbbRResponse['status_txt'],
-        };
+        };*/
       }
-
 
       await Future.delayed(const Duration(seconds: 2));
     }
-
-
   }
 
   /*static Future<File> assetImageToFile(
@@ -131,26 +132,21 @@ class Api {
 
         Api.createImageResponse = createImageResponse;
 
-        Api.uploadImageToImgbb_1 = uploadImageToImgbb_1!;
+        //Api.uploadImageToImgbb_1 = uploadImageToImgbb_1!;
         Api.uploadImageToImgbb_2 = uploadImageToImgbb_2!;
 
-        if ((uploadImageToImgbb_1 != null &&
-                uploadImageToImgbb_1?['url'] is String &&
-                uploadImageToImgbb_1?['url'].toString().startsWith("http") ==
-                    true) &&
-            (uploadImageToImgbb_2 != null &&
-                uploadImageToImgbb_2?['url'] is String &&
-                uploadImageToImgbb_2?['url'].toString().startsWith("http") ==
-                    true)) {
-          print("Hata2");
+        if ((uploadImageToImgbb_2 != null &&
+            uploadImageToImgbb_2?['url'] is String &&
+            uploadImageToImgbb_2?['url'].toString().startsWith("http") ==
+                true)) {
           final body = json.encode({
             "version":
                 "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
             "input": {
-              "swap_image": createImageResponse[
-                  "image_link"], //Api.uploadImageToImgbb_1['url'],
-              "target_image": Api.uploadImageToImgbb_2?[
-                  'url'] // Kullanıcının kendi fotoğrafı, yüzü
+              "swap_image":Api.uploadImageToImgbb_2?[
+              'url'],
+              "target_image": createImageResponse[
+              "image_link"]  // Kullanıcının kendi fotoğrafı, yüzü
             },
           });
 
