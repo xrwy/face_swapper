@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:face_swapper/models/replicate.dart';
+import 'package:face_swapper/models/stabled_diffusion.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -21,25 +22,33 @@ class Api {
       ..fields['expiration'] = "600"
       ..files.add(multiPart);
 
-    final response = await request.send();
+    var uploadImageToImgbbRResponse;
 
-    if (response.statusCode == 200) {
-      final responseBody = await response.stream.bytesToString();
-      final Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+    while (true) {
+      try {
+        uploadImageToImgbbRResponse = await request.send();
 
-      return {
-        "url": jsonResponse['data']['url'],
-      };
-    } else {
-      final responseBody = await response.stream.bytesToString();
-      final Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
+        if (uploadImageToImgbbRResponse.statusCode == 200) {
+          final responseBody = await uploadImageToImgbbRResponse.stream.bytesToString();
+          final Map<String, dynamic> jsonResponse = jsonDecode(responseBody);
 
-      return {
-        "status_code": jsonResponse['status_code'],
-        "error": jsonResponse['error']['message'],
-        "status_txt": jsonResponse['status_txt'],
-      };
+          return {
+            "url": jsonResponse['data']['url'],
+          };
+        }
+      }catch (e) {
+        return {
+          "status_code": uploadImageToImgbbRResponse['status_code'],
+          "error": uploadImageToImgbbRResponse['error']['message'],
+          "status_txt": uploadImageToImgbbRResponse['status_txt'],
+        };
+      }
+
+
+      await Future.delayed(const Duration(seconds: 2));
     }
+
+
   }
 
   /*static Future<File> assetImageToFile(
@@ -55,24 +64,38 @@ class Api {
   }*/
 
   static Future<dynamic> createImage(String socialMediaPrompt) async {
-    const url = 'https://stablediffusionapi.com/api/v4/dreambooth';
+    String url = StabledDiffusion().apiUrl;
     final headers = {
       'Content-Type': 'application/json',
     };
     final body = jsonEncode({
-      "key": "api-key",
-      "model_id": "ae-sdxl-v1",
+      "key": StabledDiffusion().apiKey,
       "prompt": socialMediaPrompt,
-      "negative_prompt":
-          "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",
+      "negative_prompt": null,
+      "model_id": "ae-sdxl-v1",
+      "panorama": null,
+      "self_attention": null,
       "width": "512",
+      "guidance": 7.5,
       "height": "512",
       "samples": "1",
-      "num_inference_steps": "30",
+      "upscale": null,
+      "safety_checker": null,
+      "clip_skip": 1,
+      "free_u": null,
+      "instant_response": null,
+      "steps": 20,
+      "use_karras_sigmas": null,
+      "algorithm_type": null,
+      "safety_checker_type": null,
+      "tomesd": null,
       "seed": null,
-      "guidance_scale": 7.5,
       "webhook": null,
-      "track_id": null
+      "track_id": null,
+      "scheduler": "DDPMScheduler",
+      "base64": null,
+      "temp": null,
+      "vae": null
     });
 
     final response = await http.post(
@@ -81,85 +104,106 @@ class Api {
       body: body,
     );
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+    var output = jsonDecode(response.body)["output"];
+    if (output != null && output.isNotEmpty) {
+      return {"image_link": output[0]};
     } else {
       return {'error': response.reasonPhrase};
     }
   }
 
-  static Map<String, dynamic> response = {};
-  static Map<String, dynamic> response_2 = {};
+  static Map<String, dynamic> createImageResponse = {};
+  static Map<String, dynamic> uploadImageToImgbb_1 = {};
+  static Map<String, dynamic> uploadImageToImgbb_2 = {};
 
   static Future<String> faceSwapper(
-      File? pingImageResult,
-      /*String selectedImage,*/
-      String selectedPrompt) async {
+      File? pingImageResult, String selectedPrompt) async {
     try {
-      /*var file =
-          await assetImageToFile(selectedImage, selectedImage.split("/")[1]);*/
+      Map<String, dynamic> createImageResponse =
+          await createImage(selectedPrompt);
 
-      var response_1 = await createImage(selectedPrompt);
-      print(response_1);
+      if (createImageResponse != null &&
+          createImageResponse!['error'] != null) {
+        throw Exception("Error${createImageResponse!['error']}");
+      } else {
+        var uploadImageToImgbb_2 =
+            await Api.uploadImageToImgbb(pingImageResult!.path);
 
-      return "Deneme";
+        Api.createImageResponse = createImageResponse;
 
+        Api.uploadImageToImgbb_1 = uploadImageToImgbb_1!;
+        Api.uploadImageToImgbb_2 = uploadImageToImgbb_2!;
 
-      var response_2 = await Api.uploadImageToImgbb(pingImageResult!.path);
+        if ((uploadImageToImgbb_1 != null &&
+                uploadImageToImgbb_1?['url'] is String &&
+                uploadImageToImgbb_1?['url'].toString().startsWith("http") ==
+                    true) &&
+            (uploadImageToImgbb_2 != null &&
+                uploadImageToImgbb_2?['url'] is String &&
+                uploadImageToImgbb_2?['url'].toString().startsWith("http") ==
+                    true)) {
+          print("Hata2");
+          final body = json.encode({
+            "version":
+                "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
+            "input": {
+              "swap_image": createImageResponse[
+                  "image_link"], //Api.uploadImageToImgbb_1['url'],
+              "target_image": Api.uploadImageToImgbb_2?[
+                  'url'] // Kullanıcının kendi fotoğrafı, yüzü
+            },
+          });
 
-      //var response_2 = await Api.uploadImageToImgbb(file.path);
+          final headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Token ${Replicate().apiToken}"
+          };
 
-      Api.response = response_1!;
-      Api.response_2 = response_2!;
+          final postResponse = await http.post(Uri.parse(Replicate().apiUrl),
+              body: body, headers: headers);
 
-      if ((response != null && response['url'] is String) &&
-          (response_2 != null && response_2['url'] is String)) {
-        final body = json.encode({
-          "version":
-              "9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
-          "input": {
-            "swap_image": Api.response['url'],
-            "target_image":
-                Api.response_2['url'] // Kullanıcının kendi fotoğrafı yüzü
-          },
-        });
+          if (postResponse.statusCode == 201) {
+            final predictionId = json.decode(postResponse.body)['id'];
+            final getUrl = "${Replicate().apiUrl}/$predictionId";
 
-        final headers = {
-          "Content-Type": "application/json",
-          "Authorization": "Token ${Replicate().apiToken}"
-        };
+            while (true) {
+              final checkResponse =
+                  await http.get(Uri.parse(getUrl), headers: headers);
+              final status = json.decode(checkResponse.body)['status'];
 
-        final postResponse = await http.post(Uri.parse(Replicate().apiUrl),
-            body: body, headers: headers);
-
-        if (postResponse.statusCode == 201) {
-          final predictionId = json.decode(postResponse.body)['id'];
-          final getUrl = "${Replicate().apiUrl}/$predictionId";
-
-          while (true) {
-            final checkResponse =
-                await http.get(Uri.parse(getUrl), headers: headers);
-            final status = json.decode(checkResponse.body)['status'];
-
-            if (status == "succeeded") {
-              final imageUrl = json.decode(checkResponse.body)['output'];
-              if (imageUrl is List) {
-                return imageUrl[0];
-              } else {
-                return imageUrl;
+              if (status == "succeeded") {
+                final imageUrl = json.decode(checkResponse.body)['output'];
+                if (imageUrl is List) {
+                  return imageUrl[0];
+                } else {
+                  return imageUrl;
+                }
+              } else if (status == "failed") {
+                throw Exception("An error occurred while loading the image.");
               }
-            } else if (status == "failed") {
-              throw Exception("An error occurred while loading the image.");
+              await Future.delayed(const Duration(seconds: 2));
             }
-            await Future.delayed(const Duration(seconds: 2));
+          } else {
+            throw Exception(
+                "The request failed. Status code: ${postResponse.statusCode}");
           }
         } else {
-          throw Exception(
-              "The request failed. Status code: ${postResponse.statusCode}");
+          if ((uploadImageToImgbb_1 != null &&
+              uploadImageToImgbb_1?['url'] is String &&
+              uploadImageToImgbb_1?['url'].toString().startsWith("http") ==
+                  true)) {
+            throw Exception(
+                "Status Code: ${uploadImageToImgbb_1?['status_code']}\n Error: ${uploadImageToImgbb_1?['error']}\n Status Text: ${uploadImageToImgbb_1?['status_txt']}");
+          } else if ((uploadImageToImgbb_2 != null &&
+              uploadImageToImgbb_2?['url'] is String &&
+              uploadImageToImgbb_2?['url'].toString().startsWith("http") ==
+                  true)) {
+            throw Exception(
+                "Status Code: ${uploadImageToImgbb_2?['status_code']}\n Error: ${uploadImageToImgbb_2?['error']}\n Status Text: ${uploadImageToImgbb_2?['status_txt']}");
+          } else {
+            throw Exception("Error");
+          }
         }
-      } else {
-        throw Exception(
-            "Status Code: ${response?['status_code']}\n Error: ${response?['error']}\n Status Text: ${response?['status_txt']}");
       }
     } catch (e) {
       throw Exception(e.toString()).toString().substring(11);
