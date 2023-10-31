@@ -22,7 +22,6 @@ class FaceSwapperState extends State<FaceSwapper> {
   bool itClicked = false;
   String isClicked = "";
   String selectedPrompt = "";
-
   String responseImage = "";
 
   Future selectImage() async {
@@ -78,12 +77,11 @@ class FaceSwapperState extends State<FaceSwapper> {
     await Future.delayed(const Duration(seconds: 0));
 
     setState(() {
-      pingImageResult = null;
       selected = "";
+      pingImageResult = null;
       itClicked = false;
-      isClicked = "";
       selectedPrompt = "";
-
+      isClicked = "";
       responseImage = responseImageParam;
     });
   }
@@ -124,7 +122,10 @@ class FaceSwapperState extends State<FaceSwapper> {
           setState(() {
             selected = "";
             pingImageResult = null;
-            //selectedImage = "";
+            itClicked = false;
+            selectedPrompt = "";
+            isClicked = "";
+            responseImage = "";
           });
         },
         child: SingleChildScrollView(
@@ -413,8 +414,8 @@ class FaceSwapperState extends State<FaceSwapper> {
                         ),
                         onPressed: () {
                           setState(() {
-                            pingImageResult = null;
                             selected = "";
+                            pingImageResult = null;
                             itClicked = false;
                             selectedPrompt = "";
                             isClicked = "";
@@ -490,7 +491,6 @@ class FaceSwapperState extends State<FaceSwapper> {
                         ],
                       );
 
-                      // show the dialog
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -513,8 +513,7 @@ class FaceSwapperState extends State<FaceSwapper> {
                       itClicked == true &&
                       selectedPrompt != ""
                   ? FutureBuilder<String>(
-                      future: Api.faceSwapper(
-                          pingImageResult, /*selectedImage,*/ selectedPrompt),
+                      future: Api.faceSwapper(pingImageResult, selectedPrompt),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
