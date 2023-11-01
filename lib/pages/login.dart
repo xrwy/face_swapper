@@ -357,13 +357,11 @@ class LoginState extends State<Login> {
                                           const Size(60, 40), //////// HERE
                                       side: const BorderSide(
                                           width: 2, color: Colors.white12)),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const FaceSwapper()),
-                                    );
+                                  onPressed: () async{
+                                    await Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const FaceSwapper()));
                                   },
                                   label: const Text(
                                     "Go to Face Changer",

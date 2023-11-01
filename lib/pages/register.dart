@@ -362,11 +362,10 @@ class RegisterState extends State<Register> {
                                       side: const BorderSide(
                                           width: 2, color: Colors.white12)),
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const FaceSwapper()),
-                                    );
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const FaceSwapper()));
                                   },
                                   label: const Text(
                                     "Go to Face Changer",

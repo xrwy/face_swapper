@@ -91,11 +91,12 @@ class FaceSwapperState extends State<FaceSwapper> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 12),
             child: Text(
               "Oxo Swapper",
               style: GoogleFonts.aclonica(fontSize: 28, color: Colors.white),
