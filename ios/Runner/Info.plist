@@ -20,6 +20,10 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>We request permission to save photos to the user's gallery.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We request permission to save photos to the user's gallery.</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
@@ -563,21 +565,50 @@ class FaceSwapperState extends State<FaceSwapper> {
                       })
                   : const SizedBox(),
               responseImage != ""
-                  ? Container(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Align(
+                  ? GestureDetector(
+                      onLongPress: () =>
+                          _handleLongPress(context, responseImage),
+                      child: Container(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Align(
                           alignment: Alignment.center,
                           child: Container(
                             margin: const EdgeInsets.only(top: 40.0),
-                            child: Image.network(
-                              responseImage,
-                            ),
-                          )))
+                            child: Image.network(responseImage),
+                          ),
+                        ),
+                      ),
+                    )
                   : const SizedBox(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _handleLongPress(BuildContext context, String imageUrl) async {
+    var open = await openAppSettings();
+
+    if(open == true) {
+      var status = await Permission.photos.request();
+      if (status.isGranted) {
+        saveImageToGallery(imageUrl);
+      } else {
+        _showErrorSnackBar(context);
+      }
+    }
+  }
+
+  void _showErrorSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Gallery licence denied.")));
+  }
+
+  saveImageToGallery(String image) async {
+    ByteData byteData =
+        await rootBundle.load('assets/sample.jpg'); // Örnek fotoğrafın yolu.
+    Uint8List uint8List = byteData.buffer.asUint8List();
+    final result = await ImageGallerySaver.saveImage(uint8List);
   }
 }
