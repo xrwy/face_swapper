@@ -56,7 +56,8 @@ class StableDiffusionApi extends ImageApiProvider {
     var jsonResponse = jsonDecode(response.body);
 
     while (jsonResponse["status"] == "processing") {
-      await Future.delayed(Duration(seconds: (jsonResponse["eta"] + 5).toInt()));  // 5 saniye ekstra bekleyerek zaman aşımı riskini azaltıyoruz.
+      await Future.delayed(
+          Duration(seconds: (jsonResponse["eta"] + 5).toInt()));
       response = await http.get(Uri.parse(jsonResponse["fetch_result"]));
       jsonResponse = jsonDecode(response.body);
     }
@@ -72,8 +73,4 @@ class StableDiffusionApi extends ImageApiProvider {
       return {'error': jsonResponse["message"].toString()};
     }
   }
-
-
-
-
 }
