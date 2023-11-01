@@ -30,43 +30,8 @@ class LoginState extends State<Login> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(
-                        top: 50, right: 0, bottom: 0, left: 0),
-                    child: TextButton(
-                      onPressed: () {
-                        if (Navigator.canPop(context)) {
-                          Navigator.pop(context);
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Warning'),
-                                content: const Text(
-                                    "There is no page to turn back to!"),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('Cancel'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_outlined,
-                        size: 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
                   const SizedBox(
-                    height: 30.0,
+                    height: 50.0,
                   ),
                   const Padding(
                     padding: EdgeInsets.all(20.0),
@@ -125,9 +90,9 @@ class LoginState extends State<Login> {
                                     BorderRadius.all(Radius.circular(10)),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Color.fromRGBO(225, 95, 27, .3),
+                                      color: Colors.black12,
                                       blurRadius: 20,
-                                      offset: Offset(0, 10))
+                                      offset: Offset(4, 10))
                                 ]),
                             child: Column(
                               children: <Widget>[
