@@ -16,6 +16,7 @@ class StableDiffusionApi extends ImageApiProvider {
     final headers = {
       'Content-Type': 'application/json',
     };
+
     final body = jsonEncode({
       "key": apiKey,
       "prompt": socialMediaPrompt,
@@ -46,23 +47,33 @@ class StableDiffusionApi extends ImageApiProvider {
       "vae": null
     });
 
-    while (true) {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: headers,
-        body: body,
-      );
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers,
+      body: body,
+    );
 
-      if (jsonDecode(response.body)["status"] == "success") {
-        var output = jsonDecode(response.body)["output"];
-        if (output != null && output.isNotEmpty) {
-          return {"image_link": output[0].toString()};
-        } else {
-          return {'error': jsonDecode(response.body)["message"].toString()};
-        }
-      }else if (jsonDecode(response.body)["status"] == "error") {
-        return {'error': jsonDecode(response.body)["message"].toString()};
+    var jsonResponse = jsonDecode(response.body);
+
+    while (jsonResponse["status"] == "processing") {
+      await Future.delayed(Duration(seconds: (jsonResponse["eta"] + 5).toInt()));  // 5 saniye ekstra bekleyerek zaman aşımı riskini azaltıyoruz.
+      response = await http.get(Uri.parse(jsonResponse["fetch_result"]));
+      jsonResponse = jsonDecode(response.body);
+    }
+
+    if (jsonResponse["status"] == "success") {
+      var output = jsonResponse["output"];
+      if (output != null && output.isNotEmpty) {
+        return {"image_link": output[0].toString()};
+      } else {
+        return {'error': jsonResponse["message"].toString()};
       }
+    } else {
+      return {'error': jsonResponse["message"].toString()};
     }
   }
+
+
+
+
 }
