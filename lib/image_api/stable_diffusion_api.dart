@@ -55,17 +55,15 @@ class StableDiffusionApi extends ImageApiProvider {
 
     var jsonResponse = jsonDecode(response.body);
 
-    while (true) {
-      if (jsonResponse["status"] == "success") {
-        var output = jsonResponse["output"];
-        if (output != null && output!.isNotEmpty) {
-          return {"image_link": output[0].toString()};
-        } else {
-          return {'error': jsonResponse["message"].toString()};
-        }
+    if (jsonResponse["status"] == "success") {
+      var output = jsonResponse["output"];
+      if (output != null && output!.isNotEmpty) {
+        return {"image_link": output[0].toString()};
       } else {
         return {'error': jsonResponse["message"].toString()};
       }
+    } else {
+      return {'error': jsonResponse["message"].toString()};
     }
   }
 }
