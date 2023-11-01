@@ -21,7 +21,7 @@ class Api {
           await imageService.createImage(selectedPrompt);
 
       if (createImageResponse['error'] != null) {
-        throw Exception("Error${createImageResponse['error']}");
+        throw Exception("Error : ${createImageResponse['error']}. Try Again.");
       } else {
         var uploadImageToImgbb =
             await imageUploadService.imageUpload(pingImageResult!.path);
