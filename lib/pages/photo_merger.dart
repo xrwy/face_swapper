@@ -178,7 +178,7 @@ class PhotoMergerState extends State<PhotoMerger> {
                     ],
                   )),
               const SizedBox(
-                height: 15,
+                height: 50,
               ),
               Align(
                   alignment: Alignment.center,
