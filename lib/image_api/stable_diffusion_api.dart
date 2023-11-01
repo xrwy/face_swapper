@@ -6,10 +6,10 @@ import 'imageApiProvider.dart';
 
 class StableDiffusionApi extends ImageApiProvider {
   @override
-  String apiKey = StabledDiffusion().apiKey;
+  String apiKey = "https://stablediffusionapi.com/api/v4/dreambooth";
 
   @override
-  String apiUrl = StabledDiffusion().apiUrl;
+  String apiUrl = "wN8YD7SCdBD3SVXTB8kwMdeWR9IopeqRZ3tDBg0HvRtge0e8o9YCsC5oNQTY";
 
   @override
   Future<Map<String, dynamic>> createImage(String socialMediaPrompt) async {
