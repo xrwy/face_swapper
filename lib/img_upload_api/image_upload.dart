@@ -25,7 +25,6 @@ class ImageUpload extends ImageUploadApiProvider {
 
     while (true) {
       uploadImageToImgbbRResponse = await request.send();
-
       if (uploadImageToImgbbRResponse.statusCode == 200) {
         final responseBody =
             await uploadImageToImgbbRResponse.stream.bytesToString();
