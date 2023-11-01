@@ -4,12 +4,13 @@ import 'package:face_swapper/models/stabled_diffusion.dart';
 
 import 'imageApiProvider.dart';
 
+
 class StableDiffusionApi extends ImageApiProvider {
   @override
-  String apiKey = "wN8YD7SCdBD3SVXTB8kwMdeWR9IopeqRZ3tDBg0HvRtge0e8o9YCsC5oNQTY";
+  String apiKey = StabledDiffusion().apiKey;
 
   @override
-  String apiUrl = "https://stablediffusionapi.com/api/v4/dreambooth";
+  String apiUrl = StabledDiffusion().apiUrl;
 
   @override
   Future<Map<String, dynamic>> createImage(String socialMediaPrompt) async {
