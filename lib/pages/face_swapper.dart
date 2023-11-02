@@ -5,7 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 import 'package:face_swapper/prompts/prompts.dart' as prompts;
 
@@ -88,9 +91,25 @@ class FaceSwapperState extends State<FaceSwapper> {
     });
   }
 
+  void showSuccessSnackBar(
+      GlobalKey<ScaffoldState> scaffoldKey, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Image Saved"),
+        backgroundColor:
+            Colors.green, // Başarı mesajlarında genellikle yeşil kullanılır
+        behavior: SnackBarBehavior
+            .floating, // Mesajın ekranın altında yüzen bir kart gibi görünmesini sağlar
+      ),
+    );
+  }
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -565,19 +584,44 @@ class FaceSwapperState extends State<FaceSwapper> {
                       })
                   : const SizedBox(),
               responseImage != ""
-                  ? GestureDetector(
-                      onLongPress: () =>
-                          _handleLongPress(context, responseImage),
-                      child: Container(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 40.0),
-                            child: Image.network(responseImage),
+                  ? Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 40.0),
+                              child: Image.network(responseImage),
+                            ),
                           ),
                         ),
-                      ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              saveImage(responseImage, 'downloaded_image.jpg',
+                                  context);
+                            },
+                            child: Container(
+                              height: 50,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.blue,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  "Download Image",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )),
+                      ],
                     )
                   : const SizedBox(),
             ],
@@ -587,28 +631,32 @@ class FaceSwapperState extends State<FaceSwapper> {
     );
   }
 
-  Future<void> _handleLongPress(BuildContext context, String imageUrl) async {
-    var open = await openAppSettings();
+  Future<void> saveImage(
+      String url, String fileName, BuildContext context) async {
+    ScaffoldMessengerState scaffoldMessengerState =
+        ScaffoldMessenger.of(context);
+    try {
+      var response = await http.get(Uri.parse(url));
+      var documentDirectory = await getApplicationDocumentsDirectory();
 
-    if(open == true) {
-      var status = await Permission.photos.request();
-      if (status.isGranted) {
-        saveImageToGallery(imageUrl);
-      } else {
-        _showErrorSnackBar(context);
-      }
+      File file = File(join(documentDirectory.path, fileName));
+      file.writeAsBytesSync(response.bodyBytes);
+
+      await ImageGallerySaver.saveFile(file.path);
+
+      scaffoldMessengerState.showSnackBar(
+        const SnackBar(
+          content: Text("Image Saved"),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (e) {
+      scaffoldMessengerState.showSnackBar(const SnackBar(
+        content: Text("Image Failed to Save. Try Again"),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+      ));
     }
-  }
-
-  void _showErrorSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("Gallery licence denied.")));
-  }
-
-  saveImageToGallery(String image) async {
-    ByteData byteData =
-        await rootBundle.load('assets/sample.jpg'); // Örnek fotoğrafın yolu.
-    Uint8List uint8List = byteData.buffer.asUint8List();
-    final result = await ImageGallerySaver.saveImage(uint8List);
   }
 }

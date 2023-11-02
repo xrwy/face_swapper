@@ -24,6 +24,8 @@
     <string>We request permission to save photos to the user's gallery.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We request permission to save photos to the user's gallery.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>The app needs access to your photo gallery.</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
