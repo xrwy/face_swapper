@@ -5,7 +5,7 @@ class ChatProviderServices {
 
   ChatProviderServices({required this.chatApiProvider});
 
-  Future<dynamic> createCompletion(String prompt) {
+  Future<String> createCompletion(String prompt) {
     return chatApiProvider.createCompletion(prompt);
   }
 }
